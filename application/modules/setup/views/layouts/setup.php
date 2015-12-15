@@ -1,30 +1,9 @@
-<?php
-/* @var $this Controller */
-$modcss = 'css/setupmod.css';
-
-// load helper url to using url default
-$this->load->helper('url');
-
-$setupCssPath = APPPATH . $modcss;
-if (file_exists($setupCssPath)) {
-    try {
-        unlink($setupCssPath);
-    } catch (Exception $ex) {
-        
-    }
-}
-//var_dump($this->load->modulePath() . $modcss);
-$source_css = $this->config->_config_paths[1] . $modcss;
-copy($source_css, $setupCssPath);
-chmod($setupCssPath,0777);
-?>
-
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta name="language" content="en">
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>application/css/setupmod.css">
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>application/modules/setup/css/setupmod.css">
         <script type="text/javascript" async="" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
         <title>Test</title>
     </head>

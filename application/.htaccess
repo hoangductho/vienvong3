@@ -1,6 +1,10 @@
 <IfModule authz_core_module>
-    Require all denied
+    <FilesMatch "\.(?!(css|js|eot|otf|ttc|ttf|woff))$">
+        Require all denied
+    </FilesMatch>
 </IfModule>
 <IfModule !authz_core_module>
-    Deny from all
+    <FilesMatch "\.(?!(css|js|eot|otf|ttc|ttf|woff))$">
+        Deny from all
+    </FilesMatch>
 </IfModule>
