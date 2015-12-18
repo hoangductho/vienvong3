@@ -54,18 +54,27 @@ class Create extends CI_Controller {
     public function table() {
         $post = filter_input(INPUT_POST, 'create', FILTER_DEFAULT, FILTER_VALIDATE_INT);
         $error = null;
-        
-        if (!empty($post) && $post) {
-            foreach ($this->tables as $name => $query) {
-                if($this->SetupModel->db->dbdriver == 'mongo') {
-                    $create = $this->SetupModel->createCollection($name, $query);
-                }else {
-                    $create = $this->SetupModel->createTable($query);
-                }
 
-                if ($create['code']) {
-                    $create['heading'] = "Create table $name error";
-                    $error[] = $create;
+        if (!empty($post) && $post) {
+            // create structure table
+            if(!$this->SetupModel->table_exists('structure') && $this->SetupModel->db->dbdriver == 'mongo') {
+                $structure = $this->SetupModel->createCollection('structure');
+                if ($structure['code']) {
+                    $structure['heading'] = 'Create table structure error';
+                    $error[] = $structure;
+                }else {
+                    foreach ($this->tables as $name => $query) {
+                        if($this->SetupModel->db->dbdriver == 'mongo') {
+                            $create = $this->SetupModel->createCollection($name, $query);
+                        }else {
+                            $create = $this->SetupModel->createTable($query);
+                        }
+
+                        if ($create['code']) {
+                            $create['heading'] = "Create table $name error";
+                            $error[] = $create;
+                        }
+                    }
                 }
             }
 
