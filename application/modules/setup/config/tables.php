@@ -56,13 +56,36 @@ $mysql['RoleAccount'] =
         . ');';
 
 $mongo = array(
-    'account' => array(),
-    'sesssion' => array(),
-    'log' => array(),
-    'data' => array(),
-    'data_structure' => array(),
-    'data_record' => array(),
-    'data_collection' => array(),
-    'data' => array());
+    'account' => array(
+            'fields' => 'id, username, password, time'
+    ),
+    'session' => array(
+            'fields' => 'id, account, agent, ip, certificate, data, created'
+    ),
+    'log' => array(
+            'fields' => 'id, account, session, action, time'
+    ),
+    'profile' => array(
+            'fields' => 'id, type, time, __mixed__'
+    ),
+    'node_type' => array(
+        'fields' => 'id, name, fields, status'
+    ),
+    'node' => array(
+            'fields' => 'id, type, name, owner, parrent, permission, time'
+    ),
+    'content' => array(
+            'fields' => 'id, type, node, __mixed__, time, status'
+    ),
+    'position' => array(
+            'fields' => 'id, name, description, time'
+    ),
+    'role' => array(
+            'fields' => 'id, node, position, permission'
+    ),
+    'access' => array(
+            'fields' => 'id, account, node, role, time'
+    )
+);
 
 return $mongo;

@@ -38,9 +38,9 @@ class Create extends CI_Controller {
      */
     public function __construct() {
         parent::__construct();
-//        var_dump($this); die();
         $this->tables = include_once $this->config->_config_paths[1] . 'config/tables.php';
-        $this->load->model('SetupModel');
+//        $this->load->model('SetupModel');
+        $this->load->model('Structure_Model');
         $this->load->set_layout('setup');
     }
 
@@ -56,25 +56,13 @@ class Create extends CI_Controller {
         $error = null;
 
         if (!empty($post) && $post) {
-            // create structure table
-            if(!$this->SetupModel->table_exists('structure') && $this->SetupModel->db->dbdriver == 'mongo') {
-                $structure = $this->SetupModel->createCollection('structure');
-                if ($structure['code']) {
-                    $structure['heading'] = 'Create table structure error';
-                    $error[] = $structure;
-                }else {
-                    foreach ($this->tables as $name => $query) {
-                        if($this->SetupModel->db->dbdriver == 'mongo') {
-                            $create = $this->SetupModel->createCollection($name, $query);
-                        }else {
-                            $create = $this->SetupModel->createTable($query);
-                        }
+            foreach ($this->tables as $name => $query) {
+                $create = $this->Structure_Model->createCollection($name, $query['fields']);
 
-                        if ($create['code']) {
-                            $create['heading'] = "Create table $name error";
-                            $error[] = $create;
-                        }
-                    }
+                if (!$create['code']) {
+                    $create['heading'] = "Create table $name error";
+                    $error[] = $create;
+                    break;
                 }
             }
 
@@ -98,8 +86,7 @@ class Create extends CI_Controller {
      * @redirect Login page
      */
     public function account() {
-        var_dump(getallheaders(), apache_request_headers());
-        var_dump($_SERVER);
+        $this->Structure_Model->addFields('account', array());
     }
 
     // -------------------------------------------------------------------------

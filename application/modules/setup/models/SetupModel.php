@@ -54,7 +54,7 @@ class SetupModel extends CI_Model {
      */
     public function createCollection($collection, $config = array()) {
         $create = $this->db->db->createCollection($collection, $config);
-
+        var_dump($create);
         $result['code'] = !$create->w;
         $result['Object'] = $create;
 
